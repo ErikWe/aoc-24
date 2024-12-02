@@ -1,6 +1,9 @@
 ﻿import argparse
-import numpy as np
-import os
+import sys
+
+sys.path.append("../..")
+
+from utility import count_items_with_filter
 
 def main(raw_data):
     group_a, group_b = extract_ids(raw_data)
@@ -20,29 +23,31 @@ def report_summed_difference(difference):
 def compute_summed_similarity(group_a, group_b):
     similarity = [id * count_occurrences_of_id(id, group_b) for id in group_a]
 
-    return np.sum(similarity)
+    return sum(similarity)
 
 def compute_summed_difference(group_a, group_b):
     group_a_sorted = sort_ids(group_a)
     group_b_sorted = sort_ids(group_b)
 
-    return np.sum(np.absolute(group_a_sorted - group_b_sorted))
+    differences = [abs(a - b) for a, b in zip(group_a_sorted, group_b_sorted)]
+
+    return sum(differences)
 
 def sort_ids(ids):
-    return np.sort(ids)
+    return sorted(ids)
 
-def count_occurrences_of_id(id, ids):
-    return np.sum(ids == id)
+def count_occurrences_of_id(target_id, ids):
+    return count_items_with_filter(ids, lambda actual_id: actual_id == target_id)
 
 def extract_ids(raw_data):
-    ids = np.array([extract_ids_from_row(raw_row) for raw_row in raw_data.split('\n')])
+    ids = [extract_ids_from_row(raw_row) for raw_row in raw_data.split('\n')]
 
-    return ids[:, 0], ids[:, 1]
+    return [id[0] for id in ids], [id[1] for id in ids]
 
 def extract_ids_from_row(raw_row):
     components = raw_row.split()
 
-    return np.array([int(components[0]), int(components[1])])
+    return [int(components[0]), int(components[1])]
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Advent of Code 2024 - Day 01')
