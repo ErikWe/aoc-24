@@ -8,8 +8,8 @@ py ./src/days/dXX/main.py <inputfile>
 
 ## Progress
 
-| Day | main                     |✓? |
-|-----|--------------------------|---|
-| 01  | [main](./src/days/d01/main.py) |★★|
-| 02  | [main](./src/days/d02/main.py) |★★|
-| 03  | [main](./src/days/d03/main.py) |★★|
+| Day |✓? |
+| --: | --- |
+| [01](./src/days/d01/main.py) |★★|
+| [02](./src/days/d02/main.py) |★★|
+| [03](./src/days/d03/main.py) |★★|
