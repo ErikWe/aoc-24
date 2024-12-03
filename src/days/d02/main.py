@@ -6,6 +6,10 @@ sys.path.append("../..")
 
 from utility import count_items_with_filter
 
+class Level_change_direction(enum.Enum):
+    INCREASE = 1
+    DECREASE = 2
+
 def main(raw_data):
     reports = extract_reports(raw_data)
 
@@ -22,10 +26,6 @@ def report_undampened_safe_reports_count(safe_reports_count):
 
 def report_dampened_safe_reports_count(safe_reports_count):
     print(f'With a dampener, the number of safe reports is: {safe_reports_count}')
-
-class Level_change_direction(enum.Enum):
-    INCREASE = 1
-    DECREASE = 2
 
 def count_safe_reports(level_differences_all_reports, dampener_limit):
     return count_items_with_filter(level_differences_all_reports, lambda level_difference: determine_level_differences_safety(level_difference, dampener_limit))
