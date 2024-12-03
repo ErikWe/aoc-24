@@ -12,3 +12,4 @@ py ./src/days/dXX/main.py <inputfile>
 |-----|--------------------------|---|
 | 01  | [main](./src/days/d01/main.py) |★★|
 | 02  | [main](./src/days/d02/main.py) |★★|
+| 03  | [main](./src/days/d03/main.py) |★★|
