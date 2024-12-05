@@ -78,7 +78,7 @@ def extract_rows_from_text(raw_text):
     return raw_text.split('\n')
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Advent of Code 2024 - Day 03')
+    parser = argparse.ArgumentParser(description='Advent of Code 2024 - Day 04')
     parser.add_argument('inputfile', help='The file containing the input data')
 
     return parser.parse_args()
