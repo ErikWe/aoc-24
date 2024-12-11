@@ -17,3 +17,4 @@ py ./src/days/dXX/main.py <inputfile>
 | [05](./src/days/d05/main.py) |★★|
 | [06](./src/days/d06/main.py) |★★|
 | [07](./src/days/d07/main.py) |★★|
+| [08](./src/days/d08/main.py) |★★|
