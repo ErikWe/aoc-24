@@ -100,7 +100,7 @@ def compute_antinode_map(map, antenna_locations_by_frequency, antinode_strategy)
     return antinode_locations_by_frequency
 
 def is_on_map(tile, map):
-    return tile.x_coord >= 0 and tile.x_coord < map.width and tile.y_coord >= 0 and tile.y_coord < map.height
+    return map.width > tile.x_coord >= 0 and map.height > tile.y_coord >= 0
 
 def is_outside_map(tile, map):
     return is_on_map(tile, map) is False
