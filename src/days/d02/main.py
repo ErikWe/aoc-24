@@ -1,9 +1,4 @@
 ﻿import enum
-import sys
-
-sys.path.append(f'{__file__}/../../..')
-
-from utility import count_items_with_filter
 
 class Level_Change_Direction(enum.Enum):
     INCREASE = 1
@@ -17,7 +12,7 @@ def solve(raw_data):
     print(f'{count_safe_level_differences(level_differences, 0)} | {count_safe_level_differences(level_differences, 1)}')
 
 def count_safe_level_differences(level_differences, dampener_count):
-    return count_items_with_filter(level_differences, lambda level_difference: determine_level_differences_safety(level_difference, dampener_count))
+    return sum([determine_level_differences_safety(level_difference, dampener_count) for level_difference in level_differences])
 
 def determine_level_differences_safety(level_differences, dampener_count):
     change_directions = [Level_Change_Direction.INCREASE, Level_Change_Direction.DECREASE]
@@ -76,6 +71,10 @@ def extract_reports(raw_data):
     return [[int(component) for component in raw_row.split()] for raw_row in raw_data.split('\n')]
 
 if __name__ == '__main__':
+    import sys
+
+    sys.path.append(f'{__file__}/../../..')
+
     from utility import parse_args_day, read_data
 
     args = parse_args_day(2)
