@@ -17,17 +17,12 @@ def count_safe_level_differences(level_differences, dampener_count):
 def determine_level_differences_safety(level_differences, dampener_count):
     change_directions = [Level_Change_Direction.INCREASE, Level_Change_Direction.DECREASE]
 
-    for change_direction in change_directions:
-        if determine_level_differences_safety_with_direction(level_differences, change_direction, dampener_count):
-            return True
-        
-        if dampener_count > 0:
-            if determine_level_differences_safety_with_direction(level_differences[1:], change_direction, dampener_count - 1):
-                return True
-
-    return False
+    return any([determine_level_differences_safety_with_direction(level_differences, change_direction, dampener_count) for change_direction in change_directions])
 
 def determine_level_differences_safety_with_direction(level_differences, change_direction, dampener_limit):
+    if dampener_limit > 0 and determine_level_differences_safety_with_direction(level_differences[1:], change_direction, dampener_limit - 1):
+        return True
+    
     for i, level_difference in enumerate(level_differences):
 
         if are_level_differences_safe(level_difference, change_direction):
