@@ -1,31 +1,13 @@
-﻿import argparse
-
-def main(raw_data):
+﻿def solve(raw_data):
     storage_blocks = parse_storage(raw_data)
 
-    fragmented_optimized_storage_blocks = optimize_storage_with_fragmentation(storage_blocks.copy())
-    non_fragmented_optimized_storage_blocks = optimize_storage_without_fragmentation(storage_blocks.copy())
+    fragmented_checksum = compute_checksum(optimize_storage_with_fragmentation(storage_blocks.copy()))
+    non_fragmented_checksum = compute_checksum(optimize_storage_without_fragmentation(storage_blocks.copy()))
 
-    fragmented_checksum = compute_checksum(fragmented_optimized_storage_blocks)
-    non_fragmented_checksum = compute_checksum(non_fragmented_optimized_storage_blocks)
-
-    report_fragmented_checksum(fragmented_checksum)
-    report_non_fragmented_checksum(non_fragmented_checksum)
-
-def report_fragmented_checksum(checksum):
-    print(f'The checksum of optimized, fragmented storage is: {checksum}')
-
-def report_non_fragmented_checksum(checksum):
-    print(f'The checksum of optimized, non-fragmented storage is: {checksum}')
+    print(f'{fragmented_checksum} | {non_fragmented_checksum}')
 
 def compute_checksum(storage_blocks):
-    checksum = 0
-
-    for i, storage_block in enumerate(storage_blocks):
-        if storage_block != -1:
-            checksum += i * storage_block
-
-    return checksum
+    return sum([i * storage_block for i, storage_block in enumerate(storage_blocks) if storage_block != -1])
 
 def optimize_storage_with_fragmentation(storage_blocks):
     i_empty_slot = -1
@@ -158,9 +140,6 @@ def storage_slot_is_not_empty(storage_slot):
 def get_end_of_file_condition(file_id):
     return lambda storage_slot: storage_slot_is_empty(storage_slot) or storage_slot != file_id
 
-def print_storage(storage_blocks):
-    print(''.join(['.' if storage_block == -1 else str(storage_block) for storage_block in storage_blocks]))
-
 def parse_storage(raw_data):
     storage_blocks = []
 
@@ -175,14 +154,15 @@ def parse_storage(raw_data):
 
     return storage_blocks
 
-def parse_args():
-    parser = argparse.ArgumentParser(description='Advent of Code 2024 - Day 09')
-    parser.add_argument('inputfile', help='The file containing the input data')
+if __name__ == '__main__':
+    import sys
 
-    return parser.parse_args()
+    sys.path.append(f'{__file__}/../../..')
 
-args = parse_args()
+    from utility import parse_args_day, read_data
 
-raw_data = open(args.inputfile, 'r', encoding='utf-8-sig').read()
+    args = parse_args_day(9)
 
-main(raw_data)
+    raw_data = read_data(args.inputfile)
+
+    solve(raw_data)

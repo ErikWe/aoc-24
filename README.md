@@ -3,7 +3,7 @@
 To run the program, first create a file with your input data. Then, from the root of the repo, run:
 
 ``` bash
-py ./src/days/dXX/main.py <inputfile>
+py ./src/main.py <day> <inputfile>
 ```
 
 ## Progress

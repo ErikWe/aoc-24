@@ -1,29 +1,18 @@
-﻿import argparse
-
-def main(raw_data):
+﻿def solve(raw_data):
     stones = parse_stones(raw_data)
-
+    
     stones_count_cache = {}
 
     stones_after_25_blinks_count = blink_n_times_stones_count(stones, 25, stones_count_cache)
     stones_after_75_blinks_count = blink_n_times_stones_count(stones, 75, stones_count_cache)
 
-    report_stones_after_n_blinks_count(stones_after_25_blinks_count, 25)
-    report_stones_after_n_blinks_count(stones_after_75_blinks_count, 75)
-
-def report_stones_after_n_blinks_count(stones_count, n):
-    print(f'After {n} blinks, there are {stones_count} stones')
+    print(f'{stones_after_25_blinks_count} | {stones_after_75_blinks_count}')
 
 def blink_n_times_stones_count(stones, n, stones_count_cache):
     if n == 0:
         return len(stones)
     
-    sum = 0
-
-    for stone in stones:
-        sum += blink_n_times_stones_count_single_stone(stone, n, stones_count_cache)
-
-    return sum
+    return sum([blink_n_times_stones_count_single_stone(stone, n, stones_count_cache) for stone in stones])
 
 def blink_n_times_stones_count_single_stone(stone, n, stones_count_cache):
     if (stone, n) in stones_count_cache:
@@ -51,14 +40,15 @@ def blick_once_single_stone(stone):
 def parse_stones(raw_data):
     return [int(x) for x in raw_data.split()]
 
-def parse_args():
-    parser = argparse.ArgumentParser(description='Advent of Code 2024 - Day 11')
-    parser.add_argument('inputfile', help='The file containing the input data')
+if __name__ == '__main__':
+    import sys
 
-    return parser.parse_args()
+    sys.path.append(f'{__file__}/../../..')
 
-args = parse_args()
+    from utility import parse_args_day, read_data
 
-raw_data = open(args.inputfile, 'r', encoding='utf-8-sig').read()
+    args = parse_args_day(11)
 
-main(raw_data)
+    raw_data = read_data(args.inputfile)
+
+    solve(raw_data)

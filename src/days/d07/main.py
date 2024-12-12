@@ -1,46 +1,18 @@
-﻿import argparse
-
-class Equation:
+﻿class Equation:
     def __init__(self, result, components):
         self.result = result
         self.components = components
 
-def main(raw_data):
+def solve(raw_data):
     equations = parse_equations(raw_data)
 
-    solvable_equations_sum_without_concatenation = sum_solvable_equations_without_concatenation(equations)
-    solvable_equations_sum_with_concatenation = sum_solvable_equations_with_concatenation(equations)
-
-    report_solvable_equations_sum_without_concatenation(solvable_equations_sum_without_concatenation)
-    report_solvable_equations_sum_with_concatenation(solvable_equations_sum_with_concatenation)
-
-def report_solvable_equations_sum_without_concatenation(solvable_equations_sum):
-    print(f'The sum of all solvable equations, without using concatenation, is: {solvable_equations_sum}')
-
-def report_solvable_equations_sum_with_concatenation(solvable_equations_sum):
-    print(f'The sum of all solvable equations, using concatenation, is: {solvable_equations_sum}')
-
-def sum_solvable_equations_without_concatenation(equations):
-    return sum_solvable_equations(equations, [operator_addition, operator_multiplication])
-
-def sum_solvable_equations_with_concatenation(equations):
-    return sum_solvable_equations(equations, [operator_addition, operator_multiplication, operator_concatenation])
+    print(f'{sum_solvable_equations(equations, get_simple_operator_set())} | {sum_solvable_equations(equations, get_extended_operator_set())}')
 
 def sum_solvable_equations(equations, operators):
-    sum = 0
-    
-    for equation in equations:
-        if can_solve_equation(equation, operators):
-            sum += equation.result
-
-    return sum
+    return sum([equation.result for equation in equations if can_solve_equation(equation, operators)])
 
 def can_solve_equation(equation, operators):
-    for possible_result in get_possible_results(equation.components, operators):
-        if possible_result == equation.result:
-            return True
-
-    return False
+    return equation.result in get_possible_results(equation.components, operators)
 
 def get_possible_results(components, operators):
     if len(components) == 1:
@@ -60,6 +32,12 @@ def operator_multiplication(a, b):
 def operator_concatenation(a, b):
     return int(str(a) + str(b))
 
+def get_simple_operator_set():
+    return [operator_addition, operator_multiplication]
+
+def get_extended_operator_set():
+    return [operator_addition, operator_multiplication, operator_concatenation]
+
 def parse_equations(raw_data):
     equations = []
 
@@ -72,14 +50,15 @@ def parse_equations(raw_data):
 
     return equations
 
-def parse_args():
-    parser = argparse.ArgumentParser(description='Advent of Code 2024 - Day 07')
-    parser.add_argument('inputfile', help='The file containing the input data')
+if __name__ == '__main__':
+    import sys
 
-    return parser.parse_args()
+    sys.path.append(f'{__file__}/../../..')
 
-args = parse_args()
+    from utility import parse_args_day, read_data
 
-raw_data = open(args.inputfile, 'r', encoding='utf-8-sig').read()
+    args = parse_args_day(7)
 
-main(raw_data)
+    raw_data = read_data(args.inputfile)
+
+    solve(raw_data)

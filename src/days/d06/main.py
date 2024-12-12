@@ -1,5 +1,4 @@
-﻿import argparse
-import enum
+﻿import enum
 
 class Directions(enum.Flag):
     NONE = 0
@@ -7,20 +6,6 @@ class Directions(enum.Flag):
     EAST = 2
     SOUTH = 4
     WEST = 8
-
-class Tile:
-    def __init__(self, x_coord, y_coord):
-        self.x_coord = x_coord
-        self.y_coord = y_coord
-
-    def __eq__(self, other):
-        if other is None:
-            return False
-
-        return self.x_coord == other.x_coord and self.y_coord == other.y_coord
-
-    def __hash__(self):
-        return hash((self.x_coord, self.y_coord))
 
 class Character_State:
     def __init__(self, tile, direction):
@@ -38,20 +23,13 @@ class Exploration:
         self.current_character_state = current_character_state
         self.explored_character_directions_by_tile = explored_character_directions_by_tile
 
-def main(raw_data):
+def solve(raw_data):
     initial_character_state, map = parse_map(raw_data)
 
     explored_tiles_count = explore_until_outside_map_or_loop_and_count_explored_tiles(initial_character_state, map)
     new_obstructions_resulting_in_loop_count = count_new_obstructions_resulting_in_loop(initial_character_state, map)
 
-    report_explored_tiles_count(explored_tiles_count)
-    report_new_obstructions_resulting_in_loop_count(new_obstructions_resulting_in_loop_count)
-
-def report_explored_tiles_count(explored_tiles_count):
-    print(f'The number of explored tiles is: {explored_tiles_count}')
-
-def report_new_obstructions_resulting_in_loop_count(new_obstructions_resulting_in_loop_count):
-    print(f'The number of new obstructions leading to a loop is: {new_obstructions_resulting_in_loop_count}')
+    print(f'{explored_tiles_count} | {new_obstructions_resulting_in_loop_count}')
 
 def explore_until_outside_map_or_loop_and_count_explored_tiles(initial_character_state, map):
     explored_character_directions_by_tile = explore_until_outside_map_or_loop(initial_character_state, map)[1]
@@ -125,32 +103,17 @@ def turn_clockwise(initial_direction):
         return Directions.NORTH
 
 def get_tile_ahead(character_state):
-    return step_tile(character_state.tile, character_state.direction)
-
-def step_tile(initial_tile, direction):
-    if direction == Directions.NORTH:
-        return step_tile_north(initial_tile)
-
-    if direction == Directions.EAST:
-        return step_tile_east(initial_tile)
-
-    if direction == Directions.SOUTH:
-        return step_tile_south(initial_tile)
-
-    if direction == Directions.WEST:
-        return step_tile_west(initial_tile)
-
-def step_tile_east(initial_tile):
-    return Tile(initial_tile.x_coord + 1, initial_tile.y_coord)
-
-def step_tile_south(initial_tile):
-    return Tile(initial_tile.x_coord, initial_tile.y_coord + 1)
-
-def step_tile_west(initial_tile):
-    return Tile(initial_tile.x_coord - 1, initial_tile.y_coord)
-
-def step_tile_north(initial_tile):
-    return Tile(initial_tile.x_coord, initial_tile.y_coord - 1)
+    if character_state.direction == Directions.NORTH:
+        return (character_state.tile[0], character_state.tile[1] - 1)
+    
+    if character_state.direction == Directions.EAST:
+        return (character_state.tile[0] + 1, character_state.tile[1])
+    
+    if character_state.direction == Directions.SOUTH:
+        return (character_state.tile[0], character_state.tile[1] + 1)
+    
+    if character_state.direction == Directions.WEST:
+        return (character_state.tile[0] - 1, character_state.tile[1])
 
 def count_explored_tiles(explored_character_directions_by_tile):
     return len(explored_character_directions_by_tile.keys())
@@ -165,7 +128,7 @@ def is_tile_on_map(tile, map):
     return tile in map.obstructed_tiles or tile in map.unobstructed_tiles
 
 def is_tile_outside_map(tile, map):
-    return tile not in map.obstructed_tiles and tile not in map.unobstructed_tiles
+    return is_tile_on_map(tile, map) is False
 
 def is_tile_obstructed(tile, map):
     return tile in map.obstructed_tiles
@@ -186,7 +149,7 @@ def parse_map(raw_data):
 
     for y_coord, text_row in enumerate(raw_data.split("\n")):
         for x_coord, tile_character in enumerate(text_row):
-            tile = Tile(x_coord, y_coord)
+            tile = (x_coord, y_coord)
 
             if tile_character == '^':
                 initial_character_state = Character_State(tile, Directions.NORTH)
@@ -203,14 +166,15 @@ def parse_map(raw_data):
 
     return initial_character_state, Map(obstructed_tiles, unobstructed_tiles)
 
-def parse_args():
-    parser = argparse.ArgumentParser(description='Advent of Code 2024 - Day 06')
-    parser.add_argument('inputfile', help='The file containing the input data')
+if __name__ == '__main__':
+    import sys
 
-    return parser.parse_args()
+    sys.path.append(f'{__file__}/../../..')
+    
+    from utility import parse_args_day, read_data
 
-args = parse_args()
+    args = parse_args_day(6)
 
-raw_data = open(args.inputfile, 'r', encoding='utf-8-sig').read()
+    raw_data = read_data(args.inputfile)
 
-main(raw_data)
+    solve(raw_data)
