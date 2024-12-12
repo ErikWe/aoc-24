@@ -1,6 +1,6 @@
 ﻿# Advent of Code '24
 
-To run the program, first create a file with your input data. Then, from the root of the repo, run:
+To solve, first create a file with your input data. Then, from the root of the repo, run:
 
 ``` bash
 py ./src/main.py <day> <inputfile>
