@@ -4,7 +4,7 @@ import sys
 
 sys.path.append("../..")
 
-from utility import read_data
+from utility import print_results, read_data
 
 def parse_args():
     parser = argparse.ArgumentParser(description=f'Advent of Code 2024')
@@ -20,4 +20,4 @@ if __name__ == '__main__':
 
     day_module = importlib.import_module(f'days.d{args.day:02d}.main')
 
-    day_module.solve(raw_data)
+    print_results(day_module.solve(raw_data))

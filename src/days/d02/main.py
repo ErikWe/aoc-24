@@ -9,7 +9,10 @@ def solve(raw_data):
 
     level_differences = extract_level_differences_from_reports(reports)
 
-    print(f'{count_safe_level_differences(level_differences, 0)} | {count_safe_level_differences(level_differences, 1)}')
+    undampened_safe_report_count = count_safe_level_differences(level_differences, 0)
+    dampened_safe_report_count = count_safe_level_differences(level_differences, 1)
+    
+    return undampened_safe_report_count, dampened_safe_report_count
 
 def count_safe_level_differences(level_differences, dampener_count):
     return sum([determine_level_differences_safety(level_difference, dampener_count) for level_difference in level_differences])
@@ -63,17 +66,13 @@ def extract_level_differences_from_report(report):
     return [report[i] - report[i - 1] for i in range(1, len(report))]
 
 def extract_reports(raw_data):
-    return [[int(component) for component in raw_row.split()] for raw_row in raw_data.split('\n')]
+    return [[int(component) for component in raw_row.split()] for raw_row in raw_data.splitlines()]
 
 if __name__ == '__main__':
     import sys
 
     sys.path.append(f'{__file__}/../../..')
 
-    from utility import parse_args_day, read_data
+    from utility import parse_args_day, print_results, read_data
 
-    args = parse_args_day(2)
-
-    raw_data = read_data(args.inputfile)
-
-    solve(raw_data)
+    print_results(solve(read_data(parse_args_day(2).inputfile)))

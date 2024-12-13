@@ -12,7 +12,7 @@ def solve(raw_data):
     valid_updates_middle_page_sum = sum_middle_pages_of_updates(get_valid_updates(updates, update_validities))
     fixed_invalid_updates_middle_page_sum = sum_middle_pages_of_updates(sort_updates(get_invalid_updates(updates, update_validities), allowed_upcoming_pages_per_page))
 
-    print(f'{valid_updates_middle_page_sum} | {fixed_invalid_updates_middle_page_sum}')
+    return valid_updates_middle_page_sum, fixed_invalid_updates_middle_page_sum
 
 def sort_updates(updates, allowed_upcoming_pages_per_page):
     return [sort_update(update, allowed_upcoming_pages_per_page) for update in updates]
@@ -76,17 +76,13 @@ def read_rule(rule_text):
     return [int(page) for page in rule_text.split('|')]
 
 def read_rows(text, func):
-    return [func(row) for row in text.split("\n")]
+    return [func(row) for row in text.splitlines()]
 
 if __name__ == '__main__':
     import sys
 
     sys.path.append(f'{__file__}/../../..')
 
-    from utility import parse_args_day, read_data
+    from utility import parse_args_day, print_results, read_data
 
-    args = parse_args_day(5)
-
-    raw_data = read_data(args.inputfile)
-
-    solve(raw_data)
+    print_results(solve(read_data(parse_args_day(5).inputfile)))

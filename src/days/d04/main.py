@@ -1,7 +1,10 @@
 ﻿def solve(raw_data):
     text_rows = raw_data.split('\n')
 
-    print(f'{count_spellings(text_rows, count_xmas_at)} | {count_spellings(text_rows, count_x_mas_at)}')
+    xmas_count = count_spellings(text_rows, count_xmas_at)
+    x_mas_count = count_spellings(text_rows, count_x_mas_at)
+
+    return xmas_count, x_mas_count
 
 def count_spellings(text_rows, strategy):
     return sum([count_spellings_in_row(y_coord, text_rows, strategy) for y_coord in range(len(text_rows))])
@@ -57,10 +60,6 @@ if __name__ == '__main__':
 
     sys.path.append(f'{__file__}/../../..')
 
-    from utility import parse_args_day, read_data
+    from utility import parse_args_day, print_results, read_data
 
-    args = parse_args_day(4)
-
-    raw_data = read_data(args.inputfile)
-
-    solve(raw_data)
+    print_results(solve(read_data(parse_args_day(4).inputfile)))

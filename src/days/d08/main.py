@@ -6,7 +6,7 @@ def solve(raw_data):
     tiles_with_non_harmonic_antinodes_count = count_tiles_with_antinodes(compute_antinode_map(map_dimensions, antenna_locations_by_frequency, non_harmonic_antinode_strategy))
     tiles_with_harmonic_antinodes_count = count_tiles_with_antinodes(compute_antinode_map(map_dimensions, antenna_locations_by_frequency, harmonic_antinode_strategy))
 
-    print(f'{tiles_with_non_harmonic_antinodes_count} | {tiles_with_harmonic_antinodes_count}')
+    return tiles_with_non_harmonic_antinodes_count, tiles_with_harmonic_antinodes_count
 
 def count_tiles_with_antinodes(antinode_locations_by_frequency):
     tiles_with_antinodes = set()
@@ -78,7 +78,7 @@ def is_outside_map(tile, map_dimensions):
 def parse_map(raw_data):
     antenna_locations_by_frequency = {}
 
-    text_rows = raw_data.split('\n')
+    text_rows = raw_data.splitlines()
 
     for y_coord, text_row in enumerate(text_rows):
         for x_coord, tile_character in enumerate(text_row):
@@ -97,10 +97,6 @@ if __name__ == '__main__':
 
     sys.path.append(f'{__file__}/../../..')
 
-    from utility import parse_args_day, read_data
+    from utility import parse_args_day, print_results, read_data
 
-    args = parse_args_day(8)
-
-    raw_data = read_data(args.inputfile)
-
-    solve(raw_data)
+    print_results(solve(read_data(parse_args_day(8).inputfile)))

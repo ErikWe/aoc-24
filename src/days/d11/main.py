@@ -3,10 +3,10 @@
     
     stones_count_cache = {}
 
-    stones_after_25_blinks_count = blink_n_times_stones_count(stones, 25, stones_count_cache)
-    stones_after_75_blinks_count = blink_n_times_stones_count(stones, 75, stones_count_cache)
+    stone_count_25_blinks = blink_n_times_stones_count(stones, 25, stones_count_cache)
+    stone_count_75_blinks = blink_n_times_stones_count(stones, 75, stones_count_cache)
 
-    print(f'{stones_after_25_blinks_count} | {stones_after_75_blinks_count}')
+    return stone_count_25_blinks, stone_count_75_blinks
 
 def blink_n_times_stones_count(stones, n, stones_count_cache):
     if n == 0:
@@ -45,10 +45,6 @@ if __name__ == '__main__':
 
     sys.path.append(f'{__file__}/../../..')
 
-    from utility import parse_args_day, read_data
+    from utility import parse_args_day, print_results, read_data
 
-    args = parse_args_day(11)
-
-    raw_data = read_data(args.inputfile)
-
-    solve(raw_data)
+    print_results(solve(read_data(parse_args_day(11).inputfile)))

@@ -29,7 +29,7 @@ def solve(raw_data):
     explored_tiles_count = explore_until_outside_map_or_loop_and_count_explored_tiles(initial_character_state, map)
     new_obstructions_resulting_in_loop_count = count_new_obstructions_resulting_in_loop(initial_character_state, map)
 
-    print(f'{explored_tiles_count} | {new_obstructions_resulting_in_loop_count}')
+    return explored_tiles_count, new_obstructions_resulting_in_loop_count
 
 def explore_until_outside_map_or_loop_and_count_explored_tiles(initial_character_state, map):
     explored_character_directions_by_tile = explore_until_outside_map_or_loop(initial_character_state, map)[1]
@@ -147,7 +147,7 @@ def parse_map(raw_data):
     unobstructed_tiles = set()
     initial_character_state = None
 
-    for y_coord, text_row in enumerate(raw_data.split("\n")):
+    for y_coord, text_row in enumerate(raw_data.splitlines()):
         for x_coord, tile_character in enumerate(text_row):
             tile = (x_coord, y_coord)
 
@@ -171,10 +171,6 @@ if __name__ == '__main__':
 
     sys.path.append(f'{__file__}/../../..')
     
-    from utility import parse_args_day, read_data
+    from utility import parse_args_day, print_results, read_data
 
-    args = parse_args_day(6)
-
-    raw_data = read_data(args.inputfile)
-
-    solve(raw_data)
+    print_results(solve(read_data(parse_args_day(6).inputfile)))

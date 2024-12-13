@@ -6,7 +6,10 @@
 def solve(raw_data):
     equations = parse_equations(raw_data)
 
-    print(f'{sum_solvable_equations(equations, get_simple_operator_set())} | {sum_solvable_equations(equations, get_extended_operator_set())}')
+    sum_simple_equations = sum_solvable_equations(equations, get_simple_operator_set())
+    sum_extended_equations = sum_solvable_equations(equations, get_extended_operator_set())
+
+    return sum_simple_equations, sum_extended_equations
 
 def sum_solvable_equations(equations, operators):
     return sum([equation.result for equation in equations if can_solve_equation(equation, operators)])
@@ -41,7 +44,7 @@ def get_extended_operator_set():
 def parse_equations(raw_data):
     equations = []
 
-    for equation in raw_data.split('\n'):
+    for equation in raw_data.splitlines():
         result = int(equation.split(':')[0])
 
         components = [int(component) for component in equation.split(':')[1].split()]
@@ -55,10 +58,6 @@ if __name__ == '__main__':
 
     sys.path.append(f'{__file__}/../../..')
 
-    from utility import parse_args_day, read_data
+    from utility import parse_args_day, print_results, read_data
 
-    args = parse_args_day(7)
-
-    raw_data = read_data(args.inputfile)
-
-    solve(raw_data)
+    print_results(solve(read_data(parse_args_day(7).inputfile)))

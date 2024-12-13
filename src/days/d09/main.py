@@ -4,7 +4,7 @@
     fragmented_checksum = compute_checksum(optimize_storage_with_fragmentation(storage_blocks.copy()))
     non_fragmented_checksum = compute_checksum(optimize_storage_without_fragmentation(storage_blocks.copy()))
 
-    print(f'{fragmented_checksum} | {non_fragmented_checksum}')
+    return fragmented_checksum, non_fragmented_checksum
 
 def compute_checksum(storage_blocks):
     return sum([i * storage_block for i, storage_block in enumerate(storage_blocks) if storage_block != -1])
@@ -159,10 +159,6 @@ if __name__ == '__main__':
 
     sys.path.append(f'{__file__}/../../..')
 
-    from utility import parse_args_day, read_data
+    from utility import parse_args_day, print_results, read_data
 
-    args = parse_args_day(9)
-
-    raw_data = read_data(args.inputfile)
-
-    solve(raw_data)
+    print_results(solve(read_data(parse_args_day(9).inputfile)))

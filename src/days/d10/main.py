@@ -3,10 +3,10 @@
 
     all_trailhead_endings = resolve_trailhead_endings(get_all_trailhead_endings(heights))
 
-    total_trailhead_score = score_all_trailheads(all_trailhead_endings, score_trailhead_strategy)
-    total_trailhead_rating = score_all_trailheads(all_trailhead_endings, rate_trailhead_strategy)
+    trailhead_score = score_all_trailheads(all_trailhead_endings, score_trailhead_strategy)
+    trailhead_rate = score_all_trailheads(all_trailhead_endings, rate_trailhead_strategy)
 
-    print(f'{total_trailhead_score} | {total_trailhead_rating}')
+    return trailhead_score, trailhead_rate
 
 def score_all_trailheads(all_trailhead_endings, strategy):
     return sum([strategy(trailhead_endings) for trailhead_endings in all_trailhead_endings])
@@ -57,7 +57,7 @@ def get_tile_east(tile):
 def parse_map(raw_data):
     heights = []
 
-    for line in raw_data.split('\n'):
+    for line in raw_data.splitlines():
         row_heights = []
 
         for height in line:
@@ -72,10 +72,6 @@ if __name__ == '__main__':
 
     sys.path.append(f'{__file__}/../../..')
 
-    from utility import parse_args_day, read_data
+    from utility import parse_args_day, print_results, read_data
 
-    args = parse_args_day(10)
-
-    raw_data = read_data(args.inputfile)
-
-    solve(raw_data)
+    print_results(solve(read_data(parse_args_day(10).inputfile)))
