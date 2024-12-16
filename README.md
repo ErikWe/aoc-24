@@ -25,3 +25,4 @@ py ./src/main.py <day> <inputfile>
 | [13](./src/days/d13/main.py) |★★|
 | [14](./src/days/d14/main.py) |★|
 | [15](./src/days/d15/main.py) |★★|
+| [16](./src/days/d16/main.py) |★★|

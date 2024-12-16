@@ -80,10 +80,12 @@ def parse_map(raw_data, width_scale):
 
             if content == '@':
                 robot_position = (scaled_x_coord, y_coord)
-            elif content == '#':
+            
+            if content == '#':
                 for offset in range(width_scale):
                     wall_positions.add((scaled_x_coord + offset, y_coord))
-            elif content == 'O':
+            
+            if content == 'O':
                 box_positions.add((scaled_x_coord, y_coord))
 
     return Map(robot_position, box_positions, wall_positions)
@@ -104,10 +106,6 @@ def parse_moves(raw_data):
     return moves
 
 if __name__ == '__main__':
-    import sys
-
-    sys.path.append(f'{__file__}/../../..')
-
     from utility import parse_args_day, print_results, read_data
 
     print_results(solve(read_data(parse_args_day(15).inputfile)))
