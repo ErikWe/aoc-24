@@ -115,11 +115,9 @@ def heuristic(tile, direction, end_tile):
     turn_clockwise_squared_distance = (turn_clockwise_tile[0] - end_tile[0]) ** 2 + (turn_clockwise_tile[1] - end_tile[1]) ** 2
 
     if turn_clockwise_squared_distance < original_squared_distance:
-        return 1000 + heuristic(turn_clockwise_tile, turn_clockwise(direction), end_tile)
-
-    turn_counter_clockwise_tile = get_next_tile(tile, turn_counter_clockwise(direction))
+        return 1000 + heuristic(tile, turn_clockwise(direction), end_tile)
     
-    return 1000 + heuristic(turn_counter_clockwise_tile, turn_counter_clockwise(direction), end_tile)
+    return 1000 + heuristic(tile, turn_counter_clockwise(direction), end_tile)
 
 def parse_map(raw_data):
     start_tile = None
