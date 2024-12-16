@@ -1,11 +1,8 @@
-﻿import enum
+﻿import sys
 
-class Directions(enum.Flag):
-    NONE = 0
-    NORTH = 1
-    EAST = 2
-    SOUTH = 4
-    WEST = 8
+sys.path.append(f'{__file__}/../../..')
+
+from utility import Direction_2d, Directions_2d, direction_as_flag, get_next_tile, turn_clockwise
 
 class Character_State:
     def __init__(self, tile, direction):
@@ -60,7 +57,7 @@ def count_new_obstructions_resulting_in_loop(initial_character_state, map):
     current_character_state = initial_character_state
 
     while is_tile_on_map(current_character_state.tile, map):
-        tile_ahead = get_tile_ahead(current_character_state)
+        tile_ahead = get_next_tile(current_character_state.tile, current_character_state.direction)
 
         obstructed_tiles = map.obstructed_tiles.copy()
         unobstructed_tiles = map.unobstructed_tiles.copy()
@@ -77,7 +74,7 @@ def count_new_obstructions_resulting_in_loop(initial_character_state, map):
     return len(new_obstruction_tiles)
 
 def explore_one_step(initial_character_state, map):
-    tile_ahead = get_tile_ahead(initial_character_state)
+    tile_ahead = get_next_tile(initial_character_state.tile, initial_character_state.direction)
 
     if is_tile_obstructed(tile_ahead, map):
         return Character_State(initial_character_state.tile, turn_clockwise(initial_character_state.direction))
@@ -89,32 +86,6 @@ def is_loop(initial_character_state, map):
 
     return is_tile_on_map(final_character_state.tile, map)
 
-def turn_clockwise(initial_direction):
-    if initial_direction == Directions.NORTH:
-        return Directions.EAST
-
-    if initial_direction == Directions.EAST:
-        return Directions.SOUTH
-
-    if initial_direction == Directions.SOUTH:
-        return Directions.WEST
-
-    if initial_direction == Directions.WEST:
-        return Directions.NORTH
-
-def get_tile_ahead(character_state):
-    if character_state.direction == Directions.NORTH:
-        return (character_state.tile[0], character_state.tile[1] - 1)
-    
-    if character_state.direction == Directions.EAST:
-        return (character_state.tile[0] + 1, character_state.tile[1])
-    
-    if character_state.direction == Directions.SOUTH:
-        return (character_state.tile[0], character_state.tile[1] + 1)
-    
-    if character_state.direction == Directions.WEST:
-        return (character_state.tile[0] - 1, character_state.tile[1])
-
 def count_explored_tiles(explored_character_directions_by_tile):
     return len(explored_character_directions_by_tile.keys())
 
@@ -122,7 +93,7 @@ def contains_character_state(character_state, character_directions_by_tile):
     if character_state.tile not in character_directions_by_tile:
         return False
 
-    return character_directions_by_tile[character_state.tile] & character_state.direction != Directions.NONE
+    return character_directions_by_tile[character_state.tile] & direction_as_flag(character_state.direction) != Directions_2d.NONE
 
 def is_tile_on_map(tile, map):
     return tile in map.obstructed_tiles or tile in map.unobstructed_tiles
@@ -138,9 +109,9 @@ def is_tile_unobstructed(tile, map):
 
 def add_explored_character_state(current_character_state, explored_character_directions_by_tile):
     if current_character_state.tile not in explored_character_directions_by_tile:
-        explored_character_directions_by_tile[current_character_state.tile] = Directions.NONE
+        explored_character_directions_by_tile[current_character_state.tile] = Directions_2d.NONE
 
-    explored_character_directions_by_tile[current_character_state.tile] |= current_character_state.direction
+    explored_character_directions_by_tile[current_character_state.tile] |= direction_as_flag(current_character_state.direction)
 
 def parse_map(raw_data):
     obstructed_tiles = set()
@@ -152,7 +123,7 @@ def parse_map(raw_data):
             tile = (x_coord, y_coord)
 
             if tile_character == '^':
-                initial_character_state = Character_State(tile, Directions.NORTH)
+                initial_character_state = Character_State(tile, Direction_2d.NORTH)
                 unobstructed_tiles.add(tile)
                 continue
 
@@ -167,10 +138,6 @@ def parse_map(raw_data):
     return initial_character_state, Map(obstructed_tiles, unobstructed_tiles)
 
 if __name__ == '__main__':
-    import sys
-
-    sys.path.append(f'{__file__}/../../..')
-    
     from utility import parse_args_day, print_results, read_data
 
     print_results(solve(read_data(parse_args_day(6).inputfile)))
