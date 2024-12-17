@@ -97,12 +97,6 @@ def evaluate_combo_operand(combo_operand, state):
     if combo_operand == 6:
         return state.c
 
-def print_state(state):
-    print(f'a: {state.a}, b: {state.b}, c: {state.c}, combo: {evaluate_current_combo_operand(state)}, literal: {evaluate_current_literal_operand(state)}, ip: {state.instruction_pointer}, opcode: {state.instructions[state.instruction_pointer]}, output: {state.output}')
-
-def print_final_state(state):
-    print(f'a: {state.a}, b: {state.b}, c: {state.c}, output: {state.output}')
-
 def parse_state(raw_data):
     lines = raw_data.splitlines()
 
