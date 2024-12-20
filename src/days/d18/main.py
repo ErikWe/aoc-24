@@ -118,7 +118,7 @@ def is_tile_on_map(tile, map):
     return 0 <= tile[0] < map.size and 0 <= tile[1] < map.size
 
 def is_tile_outside_map(tile, map):
-    return is_tile_on_map(tile, map) == False
+    return not is_tile_on_map(tile, map)
 
 def compare_tiles(tile_a, tile_b, f_scores):
     if f_scores[tile_a] == f_scores[tile_b]:

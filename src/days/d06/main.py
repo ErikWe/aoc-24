@@ -99,7 +99,7 @@ def is_tile_on_map(tile, map):
     return tile in map.obstructed_tiles or tile in map.unobstructed_tiles
 
 def is_tile_outside_map(tile, map):
-    return is_tile_on_map(tile, map) is False
+    return not is_tile_on_map(tile, map)
 
 def is_tile_obstructed(tile, map):
     return tile in map.obstructed_tiles

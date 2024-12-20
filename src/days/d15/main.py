@@ -44,15 +44,15 @@ def try_make_move(tile, move, map, width_scale):
 
         if move == Direction_2d.NORTH or move == Direction_2d.SOUTH:
             for offset in range(width_scale - 1, -1, -1):
-                if try_make_move((box_on_tile[0] + offset, box_on_tile[1]), move, new_map, width_scale) is False:
+                if not try_make_move((box_on_tile[0] + offset, box_on_tile[1]), move, new_map, width_scale):
                     return False
             
         if move == Direction_2d.WEST:
-            if try_make_move((next_tile[0] - width_scale + 1, next_tile[1]), move, new_map, width_scale) is False:
+            if not try_make_move((next_tile[0] - width_scale + 1, next_tile[1]), move, new_map, width_scale):
                 return False
             
         if move == Direction_2d.EAST:
-            if try_make_move((next_tile[0] + width_scale - 1, next_tile[1]), move, new_map, width_scale) is False:
+            if not try_make_move((next_tile[0] + width_scale - 1, next_tile[1]), move, new_map, width_scale):
                 return False
 
         map.box_positions = new_map.box_positions

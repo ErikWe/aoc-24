@@ -17,7 +17,7 @@ def exceute_and_sum_all_mul_statements_with_conditions(text, use_conditions):
         if use_conditions:
             mul_enabled = determine_exiting_mul_enabled_status(text[:match.start()], mul_enabled)
 
-        if mul_enabled == False:
+        if not mul_enabled:
             continue
         
         sum += int(match.group(1)) * int(match.group(2))

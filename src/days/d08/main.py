@@ -73,7 +73,7 @@ def is_on_map(tile, map_dimensions):
     return 0 <= tile[0] < map_dimensions[0] and 0 <= tile[1] < map_dimensions[1]
 
 def is_outside_map(tile, map_dimensions):
-    return is_on_map(tile, map_dimensions) is False
+    return not is_on_map(tile, map_dimensions)
 
 def parse_map(raw_data):
     antenna_locations_by_frequency = {}

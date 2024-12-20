@@ -27,7 +27,7 @@ def compute_price_for_machine(machine, prize_position_offset):
 
     final_position = np.matmul(np.stack([np.stack(machine.button_a_delta), np.stack(machine.button_b_delta)], axis=1), presses)
 
-    if np.array_equal(final_position, prize_position) is False:
+    if not np.array_equal(final_position, prize_position):
         return -1
 
     return 3 * presses[0] + presses[1]
